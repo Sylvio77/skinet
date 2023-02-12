@@ -7,6 +7,20 @@ font-size: 1em;
 background:blue;
 color: white;
 text-align: center;
-top: 17px;
-//margin-right:150px;
+top: -12px;
+right:32px;
+}
+
+
+a {
+text-decoration: none;
+color:black;
+
+&.active{
+    color: orange;
+}
+}
+
+.logo{
+    cursor: pointer;
 }
