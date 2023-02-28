@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -20,7 +21,11 @@ builder.Services.AddAutoMapper(typeof(MappingProfiles));
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlite(connectionString)); 
 builder.Services.AddApplicationServices();
-builder.Services.AddSwaggerDocumention();
+builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IConnectionMultiplexer>(x =>{
+     var configuration=ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"),true);
+     return ConnectionMultiplexer.Connect(configuration);
+});
 builder.Services.AddCors(
   opt=>
   {
